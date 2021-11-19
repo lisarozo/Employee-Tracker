@@ -33,19 +33,43 @@ function callMainPrompts(){
         value: "ADD_AN_EMPLOYEE",
         },{
         name: "update an employee role",
-        value: "Update_AN_Employee_Role",
+        value: "UPDATE_AN_EMPLOYEE_ROLE",
         }
     ]
         }
     
     ])
     .then((answers) => {
+        
         let name= answers.name;
         switch (name){
             case "VIEW_ALL_DEPARTMENTS":  
-                viewDepartments();
+                viewAllDepartments();
                 break;
-            case "":
+            case "VIEW_ALL_ROLES":
+                viewAllRoles();
+                
+                break;
+                case "VIEW_ALL_EMPLOYEES":
+                    viewAllEmployees();
+                    
+                    break;
+                    case "ADD_A_DEPARTMENT":
+                        addADepartment();
+                    
+                    break;
+                    case "ADD_A_ROLE":
+                        addARole();
+                   
+                    break;
+                    case "ADD_AN_EMPLOYEE":
+                        addAnEmployee();
+                   
+                    break;
+                    case "UPDATE_AN_EMPLOYEE_ROLE":
+                        updateAnEmployeeRole();
+                    
+                    break;
             default: 
                 quit(); 
         }
