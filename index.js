@@ -1,6 +1,23 @@
+const mysql = require('mysql2');
 const inquirer = require('inquirer');
-const db= require('./db');
+const db = require('./db');
 require("console.table");
+const connection = mysql.createConnection(
+    {
+      host: 'localhost',
+      // MySQL username,
+      user: 'root',
+      // {TODO: Add your MySQL password}
+      password: 'Themoon01',
+      database: 'employees'
+    },
+    console.log(`Connected to the inventory_db database.`)
+  );
+
+  connection.connect(function(err){
+      if (err) throw err;
+  })
+
 init();
 function init(){
     callMainPrompts();
@@ -45,31 +62,32 @@ function callMainPrompts(){
         switch (name){
             case "VIEW_ALL_DEPARTMENTS":  
                 viewAllDepartments();
+                
                 break;
             case "VIEW_ALL_ROLES":
                 viewAllRoles();
                 
                 break;
-                case "VIEW_ALL_EMPLOYEES":
-                    viewAllEmployees();
+            case "VIEW_ALL_EMPLOYEES":
+                viewAllEmployees();
                     
-                    break;
-                    case "ADD_A_DEPARTMENT":
-                        addADepartment();
+                break;
+             case "ADD_A_DEPARTMENT":
+                addADepartment();
                     
-                    break;
-                    case "ADD_A_ROLE":
-                        addARole();
+                break;
+            case "ADD_A_ROLE":
+                addARole();
                    
-                    break;
-                    case "ADD_AN_EMPLOYEE":
-                        addAnEmployee();
+                break;
+             case "ADD_AN_EMPLOYEE":
+                addAnEmployee();
                    
-                    break;
-                    case "UPDATE_AN_EMPLOYEE_ROLE":
-                        updateAnEmployeeRole();
+                break;
+            case "UPDATE_AN_EMPLOYEE_ROLE":
+                updateAnEmployeeRole();
                     
-                    break;
+                break;
             default: 
                 quit(); 
         }
@@ -84,11 +102,54 @@ function callMainPrompts(){
     }); 
 }
 
-function viewDepartments() {
-    db.findAllDepartments()
+function viewAllDepartments() {
+    console.log("INSIDE OF VIEW ALL DEPARTMENTS");
+    // db.findAllDepartments()
+        // .then(([rows]) => {
+        //     let departments = rows;
+        //     console.table(departments);
+        // })
+        // .then(() => callMainPrompts());
+        connection.query("select NAME from department", function(err, res){
+            if (err) throw err;
+            console.log("alldepartments");
+            console.table(res);
+        })
+}
+function viewAllRoles() {
+//     db.viewAllRoles()
+//         .then(([rows]) => {
+//             let departments = rows;
+//             console.table(departments);
+//         })
+//         .then(() => callMainPrompts());
+connection.query("SELECT role.title, role.id FROM role", function(err, res){
+    if (err) throw err;
+    console.log("alldepartments");
+    console.table(res);
+})
+}
+
+function viewAllEmployees() {
+    db.viewAllEmployees()
         .then(([rows]) => {
             let departments = rows;
             console.table(departments);
         })
         .then(() => callMainPrompts());
+}
+function addADepartment() {
+    
+}
+function addARole() {
+    
+}
+function addAnEmployee() {
+    
+}
+function updateAnEmployeeRole() {
+    
+}
+function quit(){
+    process.exit();
 }

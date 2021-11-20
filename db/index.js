@@ -4,10 +4,11 @@ class DB{
         this.connection = connection;
     }
 
-    viewAllDepartments() {
-        return this.connection.promise().query(
-            "SELECT department.id, department.name FROM department;"
-        );
+    findAllDepartments() {
+        console.log("INSIDE DB VIEW ALL DEPARTMENTS");
+        // return this.connection.promise().query(
+        //     "SELECT department.id, department.name FROM department;"
+        // );
     }
     viewAllRoles() {
         return this.connection.promise().query(
@@ -19,24 +20,25 @@ class DB{
             "SELECT employee.id, employee.name FROM employee;"
         );
     }
-    addADepartment() {
+    addADepartment(department) {
         return this.connection.promise().query(
-            "SELECT department.id, department.name FROM department;"
+            "INSERT INTO department SET " + department + ";"
+            
         );
     }
-    addARole() {
+    addARole(role) {
         return this.connection.promise().query(
-            "SELECT department.id, department.name FROM department;"
+            "INSERT INTO role SET " + role + ";"
         );
     }
-    addAnEmployee() {
+    addAnEmployee(employee) {
         return this.connection.promise().query(
-            "SELECT employee.id, employee.first_name,  FROM employee;"
+            "INSERT INTO employee SET " + employee + ";"
         );
     } 
-    updateAnEmployeeRole() {
+    updateAnEmployeeRole(role_id, employeeid) {
         return this.connection.promise().query(
-            "SELECT department.id, department.name FROM department;"
+            "UPDATE employee SET role_id = " + role_id + " WHERE id = " + employeeid + ";"
         );
     }
 }
