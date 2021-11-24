@@ -17,7 +17,7 @@ class DB{
     }
     viewAllEmployees() {
         return this.connection.promise().query(
-            "SELECT employee.id, employee.name FROM employee;"
+            "SELECT employee.first_name, employee.last_name FROM employee;"
         );
     }
     addADepartment(department) {

@@ -129,20 +129,27 @@ connection.query("SELECT role.title, role.id FROM role", function(err, res){
     console.table(res);
 })
 }
+function viewAllEmployees() {
+
     // db.viewAllEmployees()
     //     .then(([rows]) => {
     //         let departments = rows;
     //         console.table(departments);
     //     })
     //     .then(() => callMainPrompts());
-   connection.query("SELECT employee.id, employee.name FROM employee", function(err, res){
+   connection.query("SELECT employee.first_name, employee.last_name FROM employee", function(err, res){
    if (err) throw err;
     console.log("alldepartments");
     console.table(res);
 })
-
+}
 function addADepartment() {
     
+    connection.query("INSERT INTO department SET", function(err, res){
+        if (err) throw err;
+         console.log("alldepartments");
+         console.table(res);
+     })
 }
 function addARole() {
     
