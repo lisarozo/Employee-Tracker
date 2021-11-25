@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
-const db = require('./db');
+const db = require('./db/connection');
 require("console.table");
 const connection = mysql.createConnection(
     {
@@ -110,11 +110,25 @@ function viewAllDepartments() {
         //     console.table(departments);
         // })
         // .then(() => callMainPrompts());
-        connection.query("select NAME from department", function(err, res){
-            if (err) throw err;
-            console.log("alldepartments");
-            console.table(res);
-        }) 
+        // connection.query("select NAME from department", function(err, res){
+        //     if (err) throw err;
+        //     console.log("allDepartments");
+           
+        // }) 
+        let deptId = []
+        let deptName = []
+        connection.query("SELECT * FROM department",(error, res) =>{
+            if(error) throw error
+            res.forEach(({ id }) => {
+                deptId.push(id);
+            });
+    
+            res.forEach(({ name }) => {
+                deptName.push(name);
+            });
+          addARole(deptId, deptName)  
+          console.table(res);
+        })
         init();
 }
 function viewAllRoles() {
@@ -165,37 +179,74 @@ function addADepartment() {
 
 }
 
+// function getDepartment(){
+//     let deptId = []
+//     let deptName = []
+//     connection.query("SELECT * FROM department",(error, res) =>{
+//         if(error) throw error
+//         res.forEach(({ id }) => {
+//             deptId.push(id);
+//         });
 
-function addARole() {
+//         res.forEach(({ name }) => {
+//             deptName.push(name);
+//         });
+//       addARole(deptId, deptName)  
+//     })
+// }
+// getDepartment()
+function addARole(deptId, deptName) {
+    let id = ""
+    
     inquirer.prompt([
+    
         {
             type: "input",
-            name: "title",
-            message: "What is the title you would like to add?"
+            name: "role",
+            message: "Which role would you like to add?",
+             
+        
         },
         {
             type: "input",
             name: "salary",
-            message: "What is the salary you would like to add?"
+            message: "What salary does this role have?",
+             
+        
         },
         {
             type: "list",
-            name: "role_department",
-            message: "What department does the role belong to?",
-             choices:roles ["Accounting", "Lawyer", "Engineering", "Human Resources"]
+            name: "department_id",
+            message: "Which department does this role belong to?",
+            choices: deptName
         
-        }
+        },
+
+
 
 
 ])
-// .then((answers) => {
-//     function searchRoles(roleKey, myArray){
-//         for(var i = 0; i < myArray.length; i ++){
-//             if(myArray[i].name === roleKey){
-//                 return myArray [i];
-//             }
-//         }
-//     }
+.then((answers) => {
+    for (let i = 0; i < deptId.length; i++) {
+        if (answers.department_id === deptName[i]) {
+            id += deptId[i]
+        }
+    };
+    let query = 
+    'INSERT INTO roles(title, salary, department_id)' +
+    'VALUES(?, ?, ?)';
+    connection.query(query,[answers.role, answers.salary, parseInt(id)],(err, res) => {
+        if (err) throw err;
+        init()
+    })
+       
+              
+    })
+    
+    
+    
+}
+
 //     let rolesId = searchRoles(answers.department_id, roles)
 //     connection.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answers.title}', '${parseInt(answers.salary)}', '${parseInt(rolesId.department_id)}')`,  function(err, res){
 //         if (err) throw err;
@@ -212,7 +263,6 @@ function addARole() {
 //         })
     // })
      
-}
 
 
 
