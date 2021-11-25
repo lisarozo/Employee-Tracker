@@ -114,7 +114,8 @@ function viewAllDepartments() {
             if (err) throw err;
             console.log("alldepartments");
             console.table(res);
-        })
+        }) 
+        init();
 }
 function viewAllRoles() {
 //     db.viewAllRoles()
@@ -128,6 +129,7 @@ connection.query("SELECT role.title, role.id FROM role", function(err, res){
     console.log("alldepartments");
     console.table(res);
 })
+init();
 }
 function viewAllEmployees() {
 
@@ -139,26 +141,121 @@ function viewAllEmployees() {
     //     .then(() => callMainPrompts());
    connection.query("SELECT employee.first_name, employee.last_name FROM employee", function(err, res){
    if (err) throw err;
-    console.log("alldepartments");
+    console.log("viewAllEmployees");
     console.table(res);
 })
+init();
 }
 function addADepartment() {
-    
-    connection.query("INSERT INTO department SET", function(err, res){
+    inquirer.prompt([
+        {
+        type: "input",
+        name: "department",
+        message: "What is the department you would like to add?"
+    }
+])
+    .then((answers) => {
+        connection.query(`INSERT INTO department (name) VALUES ('${answers.department}')`, function(err, res){
+            if (err) throw err;
+            
+             
+    })
+    init()
+     })
+
+}
+
+
+function addARole() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "title",
+            message: "What is the title you would like to add?"
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "What is the salary you would like to add?"
+        },
+        {
+            type: "list",
+            name: "role_department",
+            message: "What department does the role belong to?",
+             choices:roles ["Accounting", "Lawyer", "Engineering", "Human Resources"]
+        
+        }
+
+
+])
+// .then((answers) => {
+//     function searchRoles(roleKey, myArray){
+//         for(var i = 0; i < myArray.length; i ++){
+//             if(myArray[i].name === roleKey){
+//                 return myArray [i];
+//             }
+//         }
+//     }
+//     let rolesId = searchRoles(answers.department_id, roles)
+//     connection.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answers.title}', '${parseInt(answers.salary)}', '${parseInt(rolesId.department_id)}')`,  function(err, res){
+//         if (err) throw err;
+//      })
+//     })
+//     let roles = [];
+//     connection.query (`SELECT DISTINCT department.id as department_id, name FROM role
+//     RIGHT JOIN department on role.department_id = department.id;`,(err,response) => {
+//         response.forEach((role) => {
+//             roles.push({
+//                 "department_id": role.department_id,
+//                 "name": role.name
+//             })
+//         })
+    // })
+     
+}
+
+
+
+
+
+function addAnEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "first_name",
+            message: "What is the first_name of the employee you would like to add?"
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "What is the last_name of the employee you would like to add?"
+        },
+        {
+            type: "list",
+            name: "role_id",
+            message: "What department does the role belong to?"
+        },
+        {
+            type: "list",
+            name: "manager_id",
+            message: "What department does the manager belong to?"
+        },
+    ]) 
+    // connection.query("INSERT INTO employee SET", function(err, res){
+    //     if (err) throw err;
+    //      console.log("addAnEmployee");
+    //      console.table(res);
+//      })
+   
+}
+function updateAnEmployeeRole() {
+
+    connection.query("UPDATE employee SET role_id = ", function(err, res){
         if (err) throw err;
          console.log("alldepartments");
          console.table(res);
      })
-}
-function addARole() {
-    
-}
-function addAnEmployee() {
-    
-}
-function updateAnEmployeeRole() {
-    
+     init();
 }
 function quit(){
     process.exit();

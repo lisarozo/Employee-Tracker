@@ -11,6 +11,8 @@ INSERT INTO role (title, salary, department_id)
 VALUES ("lawyer", 350000, 1),
        ("HR Manager", 80000, 2),
        ("Legal Assistant", 120000, 1);
+       ("Accountant", 90000, 3);
+       ("Engineering", 100000, 4);
      
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
