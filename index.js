@@ -195,6 +195,9 @@ function addADepartment() {
 //     })
 // }
 // getDepartment()
+function errCallBack(callBack) {
+    console.error(callBack)
+}
 function addARole(deptId, deptName) {
     let id = ""
     
@@ -242,10 +245,13 @@ function addARole(deptId, deptName) {
        
               
     })
-    
-    
-    
+
+.catch(e) {
+    console.log (e)
 }
+  //  Block of code to handle errors
+}
+
 
 //     let rolesId = searchRoles(answers.department_id, roles)
 //     connection.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answers.title}', '${parseInt(answers.salary)}', '${parseInt(rolesId.department_id)}')`,  function(err, res){
